@@ -10,8 +10,8 @@ import random
 # 2-0.108-0.39
 
 
-global global_m
-global global_c
+# global global_m
+# global global_c
 
 
 def clt(Mean, Total):
@@ -321,11 +321,12 @@ def q2_part_e():
 
 def q2_part_f():
 	Total = 5
-	m = 0.11842098560963278
-	x0 = math.exp(m) # x0
-	cheb_low, cheb_upper = 0.115871, 0.120762
+	c = 0.8968232741343722 	#log(x0)
+	m = 0.11842098560963278	#slope a
+	x0 = math.exp(c) # Find x0
+	cheb_low, cheb_upper = 0.118547, 0.135498 # CI of a
 	#cheb_low, cheb_upper = bootstrap_new()
-	random_as = np.random.uniform(cheb_low, cheb_upper, Total)
+	random_as = np.random.uniform(cheb_low, cheb_upper, Total) # Random values of a
 	
 	f = lambda a, x0 : np.exp(a*10)*x0
 	xk_value = [f(a, x0) for a in random_as]
