@@ -140,13 +140,15 @@ dataset = pd.read_csv('final2021.csv', header = None, delimiter=' ', skiprows=1)
 
 
 #X = range(1,len(dataset)+1)
-X = np.array([[x] for x in range(1, len(dataset)+1)])
+X = np.array([x for x in range(1, len(dataset)+1)])
 #no_of_positives = dataset[:][1]
-Y = dataset[1].tolist()
+Y_temp = dataset[1].tolist()
+Y = np.array(Y_temp)
 #Y = dataset[:][1]
 
 #ln_Y = np.log(Y).replace([-float('math.inf')],0)
 ln_Y = np.log(Y)
+#ln_Y = np.log(Y).replace([-float('inf')], 0)
 
 
 Y = ln_Y # Updating Y to ln(Y)
@@ -159,10 +161,11 @@ m = 0			# Slope of the line initialised to 0
 c = 0			# Y-Intercept initialised to 0
 
 L = 0.0001  # The learning Rate
-epochs = 1000  # The number of iterations to perform gradient descent
+epochs = 45000  # The number of iterations to perform gradient descent
 
 n = float(len(X)) # Number of elements in X
 
+#print(X[55])
 # Performing Gradient Descent 
 for i in range(epochs): 
     Y_pred = m*X + c  # The current predicted value of Y
@@ -171,7 +174,7 @@ for i in range(epochs):
     m = m - L * D_m  # Update m
     c = c - L * D_c  # Update c
     
-# print (m, c)
+print (m, c)
 
 # Making predictions
 Y_pred = m*X + c
@@ -184,5 +187,5 @@ plt.plot(no_of_weeks, ln_Y, 'blue')
 
 new_x = [min(X), max(X)]
 new_y = [np.amin(Y_pred), np.amax(Y_pred)]
-plt.plot(new_x, new_y, color='red') # predicted
+plt.plot(X, Y_pred, color='red') # predicted
 plt.show()
