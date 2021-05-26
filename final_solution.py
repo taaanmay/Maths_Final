@@ -7,8 +7,12 @@ import math
 # from random import sample
 import random
 
+# 2-0.108-0.39
+
+
 global global_m
 global global_c
+
 
 def clt(Mean, Total):
 	N = Total
@@ -24,27 +28,12 @@ def partA_fraction(N, P, S):
 	Fraction_Negative = (N-P)/N
 	return Fraction_with_no_Symptoms, Fraction_with_Symptoms, Fraction_Negative
 
-def linear_regression(X, y, m_current=0, b_current=0, epochs=1000, learning_rate=0.0001):
-	 N = float(len(y))
-	 for i in range(epochs):
-		  y_current = (m_current * X) + b_current
-		  cost = sum([data**2 for data in (y-y_current)]) / N
-		  m_gradient = -(2/N) * sum(X * (y - y_current))
-		  b_gradient = -(2/N) * sum(y - y_current)
-		  m_current = m_current - (learning_rate * m_gradient)
-		  b_current = b_current - (learning_rate * b_gradient)
-	 return m_current, b_current, cost
 
 
 
 #TANMAY DATASET
 dataset = pd.read_csv('./final2021.csv', header=None)
 N, P, S = 10695, 1477, 895
-
-
-#COMMON DATASET
-#dataset = pd.read_csv('./common.csv', header=None)
-#N,P,S = 71100, 10074, 2736
 
 
 #Q1 Part A
@@ -232,32 +221,7 @@ def q2_partB():
 	return m,c
 m,c = q2_partB()
 
-#Q2 Part E
 
-
-# def conf_intervals_bootstrap(timings):
-	
-# 	N = len(timings)
-# 	S = 1000
-	
-# 	# sample 20% of dataset (with replacement) 1000 times
-# 	means = []
-# 	for i in range(S):
-# 		sample = random.choices(timings, k=int(0.2 * N))
-# 		means.append(prob(sample))
-
-# 	mu = sum(means) / len(means)
-# 	sigma = math.sqrt(mu - (mu ** 2))
-	
-# 	cheb_lo, cheb_hi = mu - (sigma / math.sqrt(0.05 * N)), \
-# 	mu + (sigma / math.sqrt(0.05 * N))
-# 	clt_lo, clt_hi = mu - (2 * (sigma / math.sqrt(N))), \
-# 	mu + (2 * (sigma / math.sqrt(N)))
-
-# 	print("95%% CI - BS Chebyshev: %.4f <= X <= %.4f" % \
-# 		(cheb_lo, cheb_hi))
-# 	print("95%% CI - BS CLT: %.4f <= X <= %.4f" % \
-# 		(clt_lo, clt_hi))
 
 def grad_desc_func(X, Y):
 	
@@ -279,73 +243,13 @@ def grad_desc_func(X, Y):
 		c = c - L * D_c  # c is updated
 		m = m - L * D_m  # m is updated
 
+	#print (m, c) # Value of slope and y-intercept after model is trained
 	return m,c
 		
 		
-	print (m, c) # Value of slope and y-intercept after model is trained
+	
 
-# def bootstrap():
-	
-# 	dataset = pd.read_csv('final2021.csv', header = None, delimiter=' ', skiprows=1)
 
-# 	N_iter= len(dataset)
-# 	S = 50
-	
-# 	# sample 20% of dataset (with replacement) 50 times
-# 	means_m = []
-# 	means_c = []
-# 	for i in range(S):
-# 		print(f"Range = {i}")
-# 		random_small_dataset = dataset.sample(int(0.2 * N_iter))
-# 		# Generate an array for x which is number of rows = No. of Weeks =k
-# 		X = np.array([x for x in range(1, len(random_small_dataset)+1)])
-
-# 		# Load the people that are infected = Tested Positive
-# 		P = random_small_dataset[:][1]
-# 		Y = np.log(P).replace([-float('inf')], 0)
-	
-# 		# log of the infected people to get log(Xk)
-# 		#ln_Y = np.log(Y)
-# 		#Y = ln_Y # Updating Y to ln(Y)
-	
-		
-# 		m,c = grad_desc_func(X, Y)
-# 		means_m.append(m)
-# 		means_c.append(c)
-
-# 	mu_m = sum(means_m) / len(means_m)
-# 	mu_c = sum(means_c) / len(means_c)
-	
-# 	#sigma_m = math.sqrt(mu_m - (mu_m ** 2))
-# 	#sigma_m = math.sqrt(mu_m*(1-mu_m))
-# 	sigma_m = math.sqrt(sum((xi - mu_m) ** 2 for xi in means_m) / len(means_m))
-# 	sigma_c = math.sqrt(sum((xi - mu_c) ** 2 for xi in means_c) / len(means_c))
-# 	#sigma_c = math.sqrt(mu_c*(1-mu_c))
-# 	#sigma_c = math.sqrt(mu_c - (mu_c ** 2))
-	
-# 	# For m, slope
-# 	cheb_lo_m, cheb_hi_m = mu_m - (sigma_m / math.sqrt(0.05 * N_iter)), \
-# 	mu_m + (sigma_m / math.sqrt(0.05 * N_iter))
-	
-# 	clt_lo_m, clt_hi_m = mu_m - (2 * (sigma_m / math.sqrt(N_iter))), \
-# 	mu_m + (2 * (sigma_m / math.sqrt(N_iter)))
-
-# 	print("FOR m, 95%% CI - BS Chebyshev: %.4f <= X <= %.4f" % \
-# 		(cheb_lo_m, cheb_hi_m))
-# 	print("For m, 95%% CI - BS CLT: %.4f <= X <= %.4f" % \
-# 		(clt_lo_m, clt_hi_m))
-
-# 	# #For c, y-intercept
-# 	cheb_lo_c, cheb_hi_c = mu_c - (sigma_c / math.sqrt(0.05 * N_iter)), \
-# 	mu_c + (sigma_c / math.sqrt(0.05 * N_iter))
-	
-# 	clt_lo_c, clt_hi_c = mu_c - (2 * (sigma_c / math.sqrt(N_iter))), \
-# 	mu_c + (2 * (sigma_c / math.sqrt(N_iter)))
-
-# 	print("FOR c, 95%% CI - BS Chebyshev: %.4f <= X <= %.4f" % \
-# 		(cheb_lo_c, cheb_hi_c))
-# 	print("For c, 95%% CI - BS CLT: %.4f <= X <= %.4f" % \
-# 		(clt_lo_c, clt_hi_c))
 
 def q2_part_e():
 	# Load Dataset
@@ -413,36 +317,8 @@ def q2_part_e():
 
 	return (cheb_lo_m, cheb_hi_m)
 
-q2_part_e()
 
-#OR m, 95% CI - BS Chebyshev: 0.118398 <= X <= 0.124165
-#For m, 95% CI - BS CLT: 0.119992 <= X <= 0.122571
-#FOR c, 95% CI - BS Chebyshev: 0.937873 <= X <= 1.016260
-#For c, 95% CI - BS CLT: 0.959539 <= X <= 0.994594
 
-#FOR m, 95% CI - BS Chebyshev: 0.119207 <= X <= 0.123672
-#For m, 95% CI - BS CLT: 0.120441 <= X <= 0.122438
-#FOR c, 95% CI - BS Chebyshev: 0.809976 <= X <= 0.963261
-#For c, 95% CI - BS CLT: 0.852343 <= X <= 0.920894
-
-# For 100 sampling and 10 iterations
-# FOR m, 95% CI - BS Chebyshev: 0.112721 <= X <= 0.115095
-# For m, 95% CI - BS CLT: 0.113377 <= X <= 0.114439
-# FOR c, 95% CI - BS Chebyshev: 1.055386 <= X <= 1.148769
-# For c, 95% CI - BS CLT: 1.081197 <= X <= 1.122959
-
-# For 20 sampling and 20 iterations
-# FOR m, 95% CI - BS Chebyshev: 0.115871 <= X <= 0.120762
-# For m, 95% CI - BS CLT: 0.117223 <= X <= 0.119410
-# FOR c, 95% CI - BS Chebyshev: 0.715199 <= X <= 0.963365
-# For c, 95% CI - BS CLT: 0.783791 <= X <= 0.894774
-
-#Q2 Part F
-
-#By plugging in a range of values for a that lie within the confidence interval into the 
-#formula xk = eakx0 estimate a confidence interval for xk when k = 10 weeks. In this formula
-# just use the value of logx0 (recall x0 = exp(logx0)) that you estimated in (c), there’s no need 
-# to consider a range of x0 values. Explain/discuss. [5 marks]
 def q2_part_f():
 	Total = 5
 	m = 0.11842098560963278
